@@ -1,5 +1,5 @@
 ===Required modules===
-PySimpleGUI
+PySimpleGUI (use PySimpleGUIQt if you plan on using the QT interface)
 discord
 requests
 

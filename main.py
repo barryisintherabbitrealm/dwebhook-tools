@@ -7,7 +7,13 @@ import sys
 # modules installed.
 try:
     import discord
-    import PySimpleGUI as sg
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--use-qt":
+            import PySimpleGUIQt as sg
+        else:
+            import PySimpleGUIQt
+    else:
+        import PySimpleGUI as sg
     from discord import SyncWebhook
 except ImportError as e:
     print("One or more modules cannot be imported correctly. Please make sure that all required dependencies are installed. (Check requirements.txt)")
@@ -26,6 +32,7 @@ main_layout = [
     [sg.Text("Message Text:"), sg.InputText(key="-msg_text-"), sg.Button("Send")],
     [sg.Text("Other Tools:"), sg.Button("Delete")],
     [sg.Text("Are you sure?", key="-yousure-", visible=False), sg.Button("Yes", key="-delyes-", visible=False), sg.Button("No", key="-delno-", visible=False)],
+    [sg.Text("Window Title:"), sg.InputText(key="-wintitle-"), sg.Button("Apply")],
     [sg.Button("Close"), sg.Button("Clear")]
     ]
 
@@ -64,6 +71,9 @@ while True:
         try:
             webhook.delete()
             os.system("notify-send -a '' 'dwebhook-tools' 'Webhook deleted!'")
+            window["-yousure-"].update(visible=False)
+            window["-delno-"].update(visible=False)
+            window["-delyes-"].update(visible=False)
         except Exception as e:
             print("An error has occured. The program is able to continue")
             print(e)
@@ -85,6 +95,12 @@ while True:
     if event == "Clear":
         window["-webhook_url-"].update("")
         window["-msg_text-"].update("")
+        
+    if event == "Apply":
+        try:
+            window.TKroot.title(values["-wintitle-"])
+        except:
+            pass
     
     
     if event == sg.WIN_CLOSED or event == "Close" or event == "Exit":
