@@ -1,0 +1,12 @@
+===Required modules===
+PySimpleGUI
+discord
+requests
+
+To install these:
+pip3 install PySimpleGUI discord requests
+
+===Required packages===
+kdialog
+python3-tkinter
+libnotify-bin
